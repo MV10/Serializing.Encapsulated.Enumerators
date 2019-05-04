@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace EnumerationLibrary
@@ -44,6 +45,19 @@ namespace EnumerationLibrary
             => Code.ToString();
 
         public override string ToString() => Description;
+
+        public static E Parse<E>(T code) where E : Enumeration<T>, new()
+            => GetAll<E>()
+                .Where(n => 
+                    (typeof(T) == typeof(string)) ?
+                    (code as string).Equals((n.Code as string), StringComparison.OrdinalIgnoreCase) 
+                    : n.Code.Equals(code))
+                .FirstOrDefault();
+
+        public static E ParseDescription<E>(string description) where E : Enumeration<T>, new()
+            => GetAll<E>()
+                .Where(n => n.Description.Equals(description, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
 
         public static IEnumerable<E> GetAll<E>() where E : Enumeration<T>, new()
         {
