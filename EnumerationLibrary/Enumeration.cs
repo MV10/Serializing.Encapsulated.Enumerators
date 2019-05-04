@@ -50,7 +50,7 @@ namespace EnumerationLibrary
             => GetAll<E>()
                 .Where(n => 
                     (typeof(T) == typeof(string)) ?
-                    (code as string).Equals((n.Code as string), StringComparison.OrdinalIgnoreCase) 
+                    (code as string).Equals(n.Code as string, StringComparison.OrdinalIgnoreCase) 
                     : n.Code.Equals(code))
                 .FirstOrDefault();
 
